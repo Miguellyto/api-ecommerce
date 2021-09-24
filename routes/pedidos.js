@@ -7,7 +7,15 @@ router.get('/', (req, res, next) => {// req=Requisição, res=Respota
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({error: error}) }
         conn.query(
-            'SELECT * FROM pedidos;',
+
+            `SELECT     pedidos.id_pedido,
+                        produtos.id_produto,
+                        produtos.nome,
+                        produtos.preco,
+                        pedidos.quantidade
+            FROM        pedidos
+            INNER JOIN  produtos ON produtos.id_produto = pedidos.id_produto;`,
+
             (error, resultado, fields) => {
                 if (error) { return res.status(500).send({ error: error }) }
     // Melhorando o resultado da resposta
@@ -16,13 +24,17 @@ router.get('/', (req, res, next) => {// req=Requisição, res=Respota
         pedidos: resultado.map(pedido => {
             return {
                 id_pedido: pedido.id_pedido,
-                id_produto: pedido.id_produto,
                 quantidade: pedido.quantidade,
-                request: {
+                produto: {
+                    id_produto: pedido.id_produto,
+                    nome: pedido.nome,
+                    preco: pedido.preco
+                },
+/*                     request: {
                     tipo: 'GET',
                     descricao: 'Retorna os detalhes de um pedido',
                     url: 'http://localhost:3000/pedidos/' + pedido.id_pedido
-                }
+                } */
             }
         })
     }
@@ -61,11 +73,11 @@ router.post('/', (req, res, next) => {
         id_pedido: resultado.id_pedido,
         id_produto: req.body.id_produto,
         quantidade: req.body.quantidade,
-        request: {
+/*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os pedidos',
             url: 'http://localhost:3000/pedidos'
-        }
+        } */
     }
 }
 return res.status(201).send(response);
@@ -96,11 +108,11 @@ const response = {
         id_pedido: resultado[0].id_pedido,   
         id_produto: resultado[0].id_produto,
         quantidade: resultado[0].quantidade,
-        request: {
+/*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os pedidos',
             url: 'http://localhost:3000/pedidos'
-        }
+        } */
     }
 }
 return res.status(200).send(response);
@@ -125,15 +137,15 @@ router.delete('/', (req, res, next) => {
 
 const response = {
     mensagem: 'Pedido removido com sucesso',
-    request: {
+/*     request: {
         tipo: 'GET',
         descricao: 'inseri um pedido',
-        url: 'http://localhost:3000/pedidos'
-/*         body: {
+        url: 'http://localhost:3000/pedidos',
+             body: {
             id_produto: 'String',
             quantidade: 'Number'
-        } */
-    }
+        } 
+    } */
 }
                     return res.status(202).send(response);
 
