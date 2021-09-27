@@ -1,10 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('../mysql').pool;
+//permite o upload de img
+const multer = require ('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, callBack) {
+        callBack(null, './uploads/');
+    },
+    filename: function(req, file, callback) {
+        /* callback(null, new Date().toISOString() + file.originalname); */ //coloca uma data ao subir um file.
+        let data = new Date().toISOString().replace(/:/g, '-') + '-';
+        callback(null, data + file.originalname );
+    }
+});
+//
+const upload = multer ({ 
+    storage: storage,
+    limites: {
+        fileSize:  1024 * 1024 * 5 //Limita a 5megas o tamanho de cada imagens.
+    }
+});
+
 
 // RETORNA TODOS OS PRODUTOS
 router.get('/', (req, res, next) => {// req=Requisição, res=Respota conn=conexão
-mysql.getConnection((error, conn) => {
+    mysql.getConnection((error, conn) => {
     if (error) { return res.status(500).send({error: error}) }
     conn.query(
         'SELECT * FROM produtos;',
@@ -18,11 +38,12 @@ const response = {
             id_produto: prod.id_produto,
             nome: prod.nome,
             preco: prod.preco,
-            request: {
+            imagem_produto: prod.imagem_produto,
+/*             request: {
                 tipo: 'GET',
                 descricao: 'Retorna os detalhes de um produto',
                 url: 'http://localhost:3000/produtos/' + resultado.id_produto
-            }
+            } */
         }
     })
 }
@@ -35,12 +56,14 @@ return res.status(200).send({response});
 });
 
 // INSERE UM PRODUTO
-router.post('/', (req, res, next) => {
+router.post('/', upload.single('produto_imagem'), (req, res, next) => {// req=Requisição, res=Respota conn=conexão
+    console.log(req.file);
+
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({error: error}) }
         conn.query(
-            'INSERT INTO produtos (nome, preco) VALUES (?,?)',
-            [req.body.nome, req.body.preco],
+            'INSERT INTO produtos (nome, preco, imagem_produto) VALUES (?,?,?)',//imagem_produto: coluna para IMG 
+            [req.body.nome, req.body.preco, req.file.path], //como o req.file.path permite salvar a IMG no BD
 
             //callBack da Query
             (error, resultado, field) => {
@@ -53,11 +76,12 @@ const response = {
         id_produto: resultado.id_produto,
         nome: req.body.nome,
         preco: req.body.preco,
-        request: {
+        imagem_produto: req.file.path,
+/*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os produtos',
             url: 'http://localhost:3000/produtos'
-        }
+        } */
     }
 }
 return res.status(201).send(response);
@@ -87,11 +111,12 @@ const response = {
         id_produto: resultado[0].id_produto,
         nome: resultado[0].nome,
         preco: resultado[0].preco,
-        request: {
+        imagem_produto: resultado[0].imagem_produto,
+/*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os produtos',
             url: 'http://localhost:3000/produtos'
-        }
+        } */
     }
 }
 return res.status(200).send(response);
@@ -121,11 +146,11 @@ const response = {
         id_produto: resultado.id_produto,
         nome: req.body.nome,
         preco: req.body.preco,
-        request: {
+/*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os produtos',
             url: 'http://localhost:3000/produtos' + resultado.id_produto
-        }
+        } */
     }
 }
 return res.status(202).send(response);

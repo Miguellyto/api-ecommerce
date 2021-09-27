@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 //const bodyParser = require('body-parser');
-
+app.use('/uploads', express.static('uploads'));//deixa a pasta UPLOADS pública.
 
 const rotaProdutos = require('./routes/produtos');
 const rotaPedidos = require('./routes/pedidos');
