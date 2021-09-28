@@ -191,5 +191,40 @@ const response = {
         )
     });
 });
+/* 
+//Inserindo varias imagens de um produto
+    router.post('/:id_produto/imagem', (req, res, next) => {// req=Requisição, res=Respota conn=conexão
+        console.log(req.file);
+    
+        mysql.getConnection((error, conn) => {
+            if (error) { return res.status(500).send({error: error}) }
+            conn.query(
+                'INSERT INTO imagens_produtos (id_produto, caminho) VALUES (?,?)',
+                [req.params.id_produto, req.file.path], 
+    
+                //callBack da Query
+                (error, resultado, field) => {
+                    conn.release();//libera conexão, para a api não travar
+                    if (error) { return res.status(500).send({error: error}) }
+    // Melhorando o resultado da resposta
+    const response = {
+        mensagem: 'Imagem inserido com sucesso!',
+        imagemCriada: {
+            id_produto: req.params.id_produto,
+            id_imagem: resultado.id_produto,
+            imagens_produtos: req.file.path,
+    /*         request: {
+                tipo: 'GET',
+                descricao: 'Retorna todos os produtos',
+                url: 'http://localhost:3000/produtos'
+            } */
+/*         }
+    }
+    return res.status(201).send(response);
+    //Fim melhoria                         
+                }
+            )
+        });
+    });  */
 
 module.exports = router;
