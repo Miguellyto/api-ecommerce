@@ -7,7 +7,7 @@ app.use('/uploads', express.static('uploads'));//deixa a pasta UPLOADS pública.
 const rotaProdutos = require('./routes/produtos');
 const rotaPedidos = require('./routes/pedidos');
 const rotaUsuarios = require('./routes/usuarios');
-/* const rotaImagem = require('./routes/imagem');/////////// */
+//const rotaImagem = require('./routes/imagem');/////////
 
 app.use(morgan('dev')); //monitora toda a execução e retorna logs
 //app.use(bodyParser.urlencoded({ extended: false }));  // apenas dados simples
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 app.use('/produtos', rotaProdutos);
 app.use('/pedidos', rotaPedidos);
 app.use('/usuarios', rotaUsuarios);
-/* app.use('/imagem', rotaImagem);/////////////// */
+///app.use('/imagem', rotaImagem);////////////
 
 // Quando não encontra a rota
 app.use((req, res, next) => {

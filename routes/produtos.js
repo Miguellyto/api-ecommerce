@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
         callBack(null, './uploads/');
     },
     filename: function(req, file, callback) {
-        /* callback(null, new Date().toISOString() + file.originalname); */ //coloca uma data ao subir um file.
+        /* callback(null, new Date().toISOString() + file.originalname); */ //coloca uma data ao subir um file. Essa linha está dando error foi substituida pela linha abaixo.
         let data = new Date().toISOString().replace(/:/g, '-') + '-';
         callback(null, data + file.originalname );
     }
@@ -20,7 +20,6 @@ const upload = multer ({
         fileSize:  1024 * 1024 * 5 //Limita a 5megas o tamanho de cada imagens.
     }
 });
-
 
 // RETORNA TODOS OS PRODUTOS
 router.get('/', (req, res, next) => {// req=Requisição, res=Respota conn=conexão
@@ -141,7 +140,7 @@ router.patch('/', (req, res, next) => {
 
 // Melhorando o resultado da resposta
 const response = {
-    mensagem: 'produto atualizado com sucesso!',
+    mensagem: 'Produto Atualizado com Sucesso!',
     produtoAtualizado: {
         id_produto: resultado.id_produto,
         nome: req.body.nome,
@@ -191,7 +190,7 @@ const response = {
         )
     });
 });
-/* 
+ /*
 //Inserindo varias imagens de um produto
     router.post('/:id_produto/imagem', (req, res, next) => {// req=Requisição, res=Respota conn=conexão
         console.log(req.file);
@@ -213,18 +212,18 @@ const response = {
             id_produto: req.params.id_produto,
             id_imagem: resultado.id_produto,
             imagens_produtos: req.file.path,
-    /*         request: {
+             request: {
                 tipo: 'GET',
                 descricao: 'Retorna todos os produtos',
                 url: 'http://localhost:3000/produtos'
-            } */
-/*         }
+            }
+        }
     }
     return res.status(201).send(response);
     //Fim melhoria                         
                 }
             )
         });
-    });  */
-
+    }); 
+*/
 module.exports = router;
