@@ -29,3 +29,21 @@ CREATE TABLE IF NOT EXISTS imagens_produtos (
     caminho VARCHAR(255),
     FOREIGN KEY (id_produto) REFERENCES produtos (id_produto)
 );
+
+describe imagens_produtos;
+
+--05-10-2021
+CREATE TABLE usuarios (
+id_usuario INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+email UNIQUE varchar (100),
+senha varchar (100)
+);
+
+
+select * from usuarios;
+DESCRIBE usuarios;
+
+show tables;    
+
+ALTER TABLE usuarios ADD UNIQUE (email);
+RENAME TABLE usuario TO usuarios
