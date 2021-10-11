@@ -38,7 +38,7 @@ const response = {
             nome: prod.nome,
             preco: prod.preco,
             imagem_produto: prod.imagem_produto,
-/*             request: {
+          /*             request: {
                 tipo: 'GET',
                 descricao: 'Retorna os detalhes de um produto',
                 url: 'http://localhost:3000/produtos/' + resultado.id_produto
