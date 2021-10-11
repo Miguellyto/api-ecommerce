@@ -2,6 +2,7 @@ const express = require ('express');
 const router = express.Router();
 const mysql = require('../mysql').pool;
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.post('/cadastro', (req, res, next) => {
     mysql.getConnection((err, conn) => {
@@ -40,6 +41,34 @@ router.post('/cadastro', (req, res, next) => {
     });
 });
 
+
+// RETORNA TODOS OS USERS
+router.get('/cadastro', (req, res, next) => {// req=Requisição, res=Respota conn=conexão
+    mysql.getConnection((error, conn) => {
+    if (error) { return res.status(500).send({error: error}) }
+    conn.query(
+        'SELECT * FROM usuarios;',
+        (error, resultado, fields) => {
+            if (error) { return res.status(500).send({ error: error }) }
+// Melhorando o resultado da resposta
+const response = {
+    users: resultado.length,
+    email: resultado.map(user => {
+        return {
+            id_user: user.insertId,
+            user: user.nome,
+            email: req.body.email,
+            }
+    })
+}
+return res.status(200).send({response});
+//Fim melhoria
+
+            }
+        )
+    });
+});
+
 router.post('/login', (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error}) }
@@ -55,7 +84,18 @@ router.post('/login', (req, res, next) => {
                     return res.status(401).send({ mensagem: 'Falha na Autenticação' })
                 }
                 if (result) {
-                    return res.status(200).send({ mensagem: 'Autenticado com Sucesso' });
+                    const token = jwt.sign({
+                        id_usuario: results[0].id_usuario,
+                        email: results[0].email
+                    }, 
+                    process.env.JWT_KEY,
+                    {
+                        expiresIn: "1h"
+                    })
+                    return res.status(200).send({ 
+                        mensagem: 'Autenticado com Sucesso!', 
+                        token: token
+                    });
                 }
                 return res.status(401).send({ mensagem: 'Falha na Autenticação' })
             });
@@ -64,4 +104,3 @@ router.post('/login', (req, res, next) => {
 });
 
 module.exports = router;
- 
