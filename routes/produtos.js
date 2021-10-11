@@ -3,6 +3,8 @@ const router = express.Router();
 const mysql = require('../mysql').pool;
 //permite o upload de img
 const multer = require ('multer');
+const login = require('../middleware/login');
+
 const storage = multer.diskStorage({
     destination: function (req, file, callBack) {
         callBack(null, './uploads/');
@@ -55,7 +57,7 @@ return res.status(200).send({response});
 });
 
 // INSERE UM PRODUTO
-router.post('/', upload.single('produto_imagem'), (req, res, next) => {// req=Requisição, res=Respota conn=conexão
+router.post('/', login, upload.single('produto_imagem'), (req, res, next) => {// req=Requisição, res=Respota conn=conexão
     console.log(req.file);
 
     mysql.getConnection((error, conn) => {
@@ -126,7 +128,7 @@ return res.status(200).send(response);
 });
 
 // ALTERA UM PRODUTO
-router.patch('/', (req, res, next) => {
+router.patch('/', login, (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) }
         conn.query(
@@ -161,7 +163,7 @@ return res.status(202).send(response);
 });
 
 // DELETA UM PRODUTO
-router.delete('/', (req, res, next) => {
+router.delete('/', login, (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({error: error}) }
         conn.query(
