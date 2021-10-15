@@ -73,3 +73,10 @@ CREATE TABLE pedidos (
 	quantidade NUMERIC(11) NOT NULL
 );
 
+ALTER TABLE produtos RENAME TO products;
+
+ALTER TABLE pedidos RENAME TO orders;
+
+ALTER TABLE orders RENAME id_pedido TO id_order; --Alteração não aplicada
+
+ALTER TABLE orders RENAME id_produto TO sku_produto;
