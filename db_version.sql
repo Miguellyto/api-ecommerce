@@ -108,3 +108,8 @@ select * from produtos;
 ALTER TABLE produtos RENAME COLUMN createdAt TO updateAt;
 
 ALTER TABLE produtos RENAME COLUMN updateAt TO createdAt;
+
+---QUERY DO phpMyAdmin
+ALTER TABLE `produtos` CHANGE `createdAt` `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE `produtos` CHANGE `updateAt` `updateAt` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
