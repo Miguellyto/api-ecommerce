@@ -3,6 +3,7 @@ const router = express.Router();
 const mysql = require('../mysql').pool;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 
 router.post('/cadastro', (req, res, next) => {
     mysql.getConnection((err, conn) => {
@@ -27,7 +28,8 @@ router.post('/cadastro', (req, res, next) => {
                             mensagem: 'Usuário criado com sucesso',
                             usuarioCriado: {
                                 id_usuario: results.insertId,
-                                email: req.body.email
+                                email: req.body.email,
+                                createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
                             } 
                         }
                         if (error) { return res.status(500).send({ error: error }) }

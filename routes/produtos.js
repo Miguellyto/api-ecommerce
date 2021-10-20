@@ -4,6 +4,7 @@ const mysql = require('../mysql').pool;
 //permite o upload de img
 const multer = require ('multer');
 const login = require('../middleware/login');
+const moment = require('moment');
 
 const storage = multer.diskStorage({
     destination: function (req, file, callBack) {
@@ -78,6 +79,7 @@ const response = {
         nome: req.body.nome,
         preco: req.body.preco,
         imagem_produto: req.file.path,
+        createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
 /*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os produtos',
@@ -92,7 +94,7 @@ return res.status(201).send(response);
     });
 });
 
-// RETORNA OS DADOS DE UM PRODUTO
+// RETORNA OS DADOS DE UM PRODUTO PELO ID
 router.get('/:id_produto', (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({error: error}) }
@@ -113,6 +115,7 @@ const response = {
         nome: resultado[0].nome,
         preco: resultado[0].preco,
         imagem_produto: resultado[0].imagem_produto,
+        createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
 /*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os produtos',
@@ -147,6 +150,7 @@ const response = {
         id_produto: resultado.id_produto,
         nome: req.body.nome,
         preco: req.body.preco,
+        updateAt: moment().format('YYYY-MM-DD HH:mm:ss'),
 /*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os produtos',
@@ -177,6 +181,7 @@ router.delete('/', login, (req, res, next) => {
 
 const response = {
     mensagem: 'Produto removido com sucesso',
+    deletedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
     request: {
         tipo: 'GET',
         descricao: 'inseri um produto',
