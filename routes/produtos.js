@@ -41,6 +41,8 @@ const response = {
             nome: prod.nome,
             preco: prod.preco,
             imagem_produto: prod.imagem_produto,
+            createdAt: prod.createdAt,
+            updateAt: prod.updateAt
           /*             request: {
                 tipo: 'GET',
                 descricao: 'Retorna os detalhes de um produto',
@@ -115,7 +117,10 @@ const response = {
         nome: resultado[0].nome,
         preco: resultado[0].preco,
         imagem_produto: resultado[0].imagem_produto,
-        createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
+        createdAt: resultado[0].createdAt,
+        updateAt: resultado[0].updateAt
+
+        /* createdAt: moment().format('YYYY-MM-DD HH:mm:ss') */
 /*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os produtos',
@@ -147,10 +152,12 @@ router.patch('/', login, (req, res, next) => {
 const response = {
     mensagem: 'Produto Atualizado com Sucesso!',
     produtoAtualizado: {
-        id_produto: resultado.id_produto,
+        ///id_produto: req.id_produto,////
         nome: req.body.nome,
         preco: req.body.preco,
-        updateAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+        ///updateAt: req.body.createdAt /////
+
+        /* updateAt: moment().format('YYYY-MM-DD HH:mm:ss'), */
 /*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os produtos',

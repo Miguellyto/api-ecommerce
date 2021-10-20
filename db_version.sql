@@ -81,11 +81,8 @@ ALTER TABLE orders RENAME id_pedido TO id_order; --Alteração não aplicada
 
 ALTER TABLE orders RENAME id_produto TO sku_produto;
 
-
 ---20-10-2021
 DESCRIBE produtos;
-
-select * from produtos;
 
 ALTER TABLE produtos
 ADD COLUMN createdAt VARCHAR(100);
@@ -94,4 +91,20 @@ ALTER TABLE produtos
 ADD COLUMN updateAt VARCHAR(100);
 
 ALTER TABLE produtos
-ADD COLUMN deleteAt VARCHAR(100);
+ADD COLUMN updateAt timestamp NOT NULL;
+--ADD COLUMN updateAt DATETIME NOT NULL;
+
+ALTER TABLE produtos
+ADD COLUMN createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;
+--ADD COLUMN updateAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE produtos
+ADD COLUMN deleteAt DATETIME NOT NULL;
+
+ALTER TABLE produtos DROP COLUMN createdAt, DROP COLUMN updateAt;
+
+select * from produtos;
+
+ALTER TABLE produtos RENAME COLUMN createdAt TO updateAt;
+
+ALTER TABLE produtos RENAME COLUMN updateAt TO createdAt;
