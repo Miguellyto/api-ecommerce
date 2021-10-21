@@ -135,13 +135,14 @@ LIMIT 10 */
 /* 
 CREATE FUNCTION update_timestamp() RETURNS trigger AS $update_timestamp$
     BEGIN
-        NEW.modified := current_timestamp;
+        NEW.modified := current_timestamp; ---//pode ser  NEW.updated
         RETURN NEW;
     END;
 $update_timestamp$ LANGUAGE plpgsql;
 
 ----
-CREATE TRIGGER update_timestamp BEFORE INSERT OR UPDATE ON products
+CREATE TRIGGER update_timestamp BEFORE INSERT OR UPDATE ON products --//Inserir/Atualizar
+--CREATE TRIGGER update_timestamp BEFORE UPDATE ON products --//Apenas quando Atualizar
     FOR EACH ROW EXECUTE PROCEDURE update_timestamp(); 
 
 ----Criando a coluna MODIFIED----    
