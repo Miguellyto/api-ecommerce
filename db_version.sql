@@ -125,3 +125,7 @@ SELECT column_name FROM information_schema.columns WHERE table_name = 'recurso';
 
 --Ver detalhes das colunas de uma tabela
 SELECT * FROM information_schema.columns WHERE table_name ='recurso';
+
+/* select * from RECURSO
+WHERE NOME LIKE 'FOGAO 4B. ESMALTEC BALI CRISTAL BR'
+LIMIT 10 */
