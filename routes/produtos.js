@@ -66,8 +66,8 @@ router.post('/', login, upload.single('produto_imagem'), (req, res, next) => {//
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({error: error}) }
         conn.query(
-            'INSERT INTO produtos (nome, preco, imagem_produto) VALUES (?,?,?)',//imagem_produto: coluna para IMG 
-            [req.body.nome, req.body.preco, req.file.path], //como o req.file.path permite salvar a IMG no BD
+            'INSERT INTO produtos (nome, preco, imagem_produto, createdAt) VALUES (?,?,?,?)',//imagem_produto: coluna para IMG 
+            [req.body.nome, req.body.preco, req.file.path, req.body.createdAt], //como o req.file.path permite salvar a IMG no BD
 
             //callBack da Query
             (error, resultado, field) => {
@@ -81,7 +81,8 @@ const response = {
         nome: req.body.nome,
         preco: req.body.preco,
         imagem_produto: req.file.path,
-        createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+        //createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+        createdAt: req.body.createdAt
 /*         request: {
             tipo: 'GET',
             descricao: 'Retorna todos os produtos',
