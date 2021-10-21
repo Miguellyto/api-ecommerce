@@ -106,3 +106,22 @@ ALTER TABLE produtos RENAME COLUMN updateAt TO createdAt;
 ALTER TABLE `produtos` CHANGE `createdAt` `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
 ALTER TABLE `produtos` CHANGE `updateAt` `updateAt` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+---NO POSTGRES
+--Listar os Bancos de Dados
+SELECT datname FROM pg_database;
+
+--Exibindo tabelas do Banco de Dados
+SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';
+
+--Selecionando Exibe os campos da tabela
+ Select * from ILOG where 1 = 2;
+
+--Selecionar apenas o primeiro registro da tabela
+ Select * from ILOG LIMIT 1;
+
+--Visualizando as colunas de uma tabela
+SELECT column_name FROM information_schema.columns WHERE table_name = 'recurso';
+
+--Ver detalhes das colunas de uma tabela
+SELECT * FROM information_schema.columns WHERE table_name ='recurso';
