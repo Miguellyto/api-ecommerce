@@ -129,3 +129,21 @@ SELECT * FROM information_schema.columns WHERE table_name ='recurso';
 /* select * from RECURSO
 WHERE NOME LIKE 'FOGAO 4B. ESMALTEC BALI CRISTAL BR'
 LIMIT 10 */
+
+-------------Criando Gatilho para a coluna MODIFIED no Postgres---------------
+
+/* 
+CREATE FUNCTION update_timestamp() RETURNS trigger AS $update_timestamp$
+    BEGIN
+        NEW.modified := current_timestamp;
+        RETURN NEW;
+    END;
+$update_timestamp$ LANGUAGE plpgsql;
+
+----
+CREATE TRIGGER update_timestamp BEFORE INSERT OR UPDATE ON products
+    FOR EACH ROW EXECUTE PROCEDURE update_timestamp(); 
+
+----Criando a coluna MODIFIED----    
+ALTER TABLE products ADD COLUMN modified TIMESTAMP;
+    */
