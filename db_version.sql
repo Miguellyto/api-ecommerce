@@ -15,6 +15,8 @@ INNER JOIN  produtos ON produtos.id_produto = pedidos.id_produto;
 
 ---27-09-2021
 describe produtos;
+--Exclui colunas
+ALTER TABLE cadastro DROP COLUMN created, DROP COLUMN modified;
 
 ALTER TABLE produtos
 ADD COLUMN imagem_produto VARCHAR(500);
@@ -39,7 +41,9 @@ email UNIQUE varchar (100),
 senha varchar (100)
 );
 
-
+--Alterar um campo existente para UNIQUE
+ALTER TABLE cadastro ADD UNIQUE (email);
+ALTER TABLE `cadastro` ADD UNIQUE(`email`); -- no phpMyadmin
 select * from usuarios;
 DESCRIBE usuarios;
 
