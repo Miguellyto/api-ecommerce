@@ -156,3 +156,114 @@ CREATE TRIGGER update_timestamp BEFORE INSERT OR UPDATE ON products --//Inserir/
     FOR EACH ROW EXECUTE PROCEDURE update_timestamp(); 
 
  */
+
+---DO INNOVARO--
+
+---Query imagem 
+Select iKey, iVersion, iFieldNames, iBeforeValues
+From iLog
+Where iType = -1898145931 /* Registro Removido */;
+
+Select distinct p.PESSOA, p.NUMERO, p.EMISSAO, p.CHCRIACAO, p.YIDPEDIDO, e.CODIGO as CODIGORASTREIO, e.CHAVE as CHAVE_EVENTO
+        From PEDIDO p
+        join INTEGRACAO i on i.YIDPEDIDO = p.YIDPEDIDO
+        left outer join EVENTO e on e.CRPEDIDO = p.CHCRIACAO and e.CLASSE = -1894804814 /* Código de Rastreamento */
+        Where i.YAVISOFATURAMENTO is not null
+            and p.OPERACAOCANCELADA is null
+            and p.CHPEDBAIXA is not null
+            and p.APROVACAO is not null
+            and p.STATUSNFE = -1894641856 /* Enviada com Sucesso */
+        " + whereExpress + "
+---
+        -- select
+        --     YDATAINCLUSAO,
+        --     MAX(YHORAINCLUSAO) as HORAINCLUSAO
+        -- from
+        --     INTEGRACAO
+        -- where
+        --     CLASSE = " + ECommerceConstantesCC.classes.INTEGRACAO_PEDIDO + "
+        --     and YDATAINCLUSAO in (
+        --         select
+        --             MAX(YDATAINCLUSAO) as DATAINCLUSAO
+        --         from
+        --             INTEGRACAO
+        --         where
+        --             CLASSE = " + ECommerceConstantesCC.classes.INTEGRACAO_PEDIDO + "
+        --     )
+        -- group by YDATAINCLUSAO";
+
+---
+--TABELA INTEGRACAO
+/* select
+CHAVE,
+VERSAOPEDIDO,
+DATAGRAVACAOPEDIDO,
+HORAGRAVACAOPEDIDO,
+DADOSPEDIDO,
+YAVISOFATURAMENTO,
+YAVISOFATURAMENTOH,
+YAVISOFATURAMENTOUSUARIO,
+YDADOSPAGAMENTO,
+YSITUACAOPAGAMENTO,
+YDADOSPEDIDO,
+YSTATUS,
+YIDPEDIDO,
+YEMAIL
+from integracao LIMIT 2; */
+
+--TABELA PEDIDO
+/* select
+CHAVE,
+CHCRIACAO,
+RECURSO,
+PEDIDO,
+UNITARIO,
+QUANTIDADE,
+EMISSAOPED,
+EMISSAOPEDH,
+DATAENTREGA,
+EMISSAOUTC,
+EMISSAOHUTC,
+RASTREIO,
+TIPOFRETE,
+FRETE,
+NUMEROPEDIDOCOMPRA,
+ITEMPEDIDOCOMPRA,
+YIDPEDIDO
+from PEDIDO LIMIT 2; */
+
+---Produto OK---
+select 
+    a.chave, 
+    a.ean,
+    '' as ncm,
+    a.nome, 
+    a.codigo,
+    'quantidade' as quantidade,
+    'preço especial' as preço_especial,
+    b.fator as preço,
+    a.descricaogenerica,
+    a.marca, 
+    'custo' as custo,
+    a.prazogarantia,
+    'observacao' as observacao,
+    'link produto' as link_produto,
+    'acessivel' as acessivel,
+    a.classe,   
+    'tempo manuseio' as tempo_manuseio,
+    'tempo fabricacao' as tempo_fabricacao,
+    a.comprimento as comprimento,
+    a.largura as largura,
+    a.altura as altura,
+    a.pesbruunid as peso,
+    'atributos' as atributos,
+    'fotos' as fotos,
+    'tabelas de preco' as tabela_preco,
+    'deposito' as deposito,
+    'variacoes' as variacoes
+    from RECURSO a 
+    join fator b
+    on a.chave = b.recursoorig
+    and b.tabfator = 462894
+    and b.fim is null
+where codigo = '1056'
